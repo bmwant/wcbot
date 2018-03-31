@@ -5,7 +5,7 @@
 
 - name: bet365
   url: "https://mobile.bet365.com"
-  parser: "dummy_parser"
+  parser: "dummy"
 
 - name: Paddy Power
   url: "https://www.paddypower.com/bet"

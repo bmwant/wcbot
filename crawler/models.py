@@ -6,4 +6,4 @@ class Resource(object):
     name: str = attr.ib()
     url: str = attr.ib()
     use_proxy: bool = attr.ib(default=False)
-    parser: str = attr.ib(default='dummy_parser')
+    parser: str = attr.ib(default='dummy')

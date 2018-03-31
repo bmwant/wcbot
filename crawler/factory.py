@@ -40,8 +40,8 @@ class Factory(object):
             raise ValueError(
                 f'No such parser: {parser_name}. Check resources meta file.')
 
-        class_name = parser_name.title().replace('_', '')
-        parser_cls = getattr(module, class_name, default=None)
+        class_name = f'{parser_name}_parser'.title().replace('_', '')
+        parser_cls = getattr(module, class_name, None)
         if parser_cls is None:
             raise ValueError(
                 f'No such class {class_name} within module {module_name}.')
