@@ -9,8 +9,15 @@ $ npm install
 $ pipenv shell
 $ python runserver.py
 ```
+or using CLI scripts
+```
+```
 
 ### Test
 ```
 $ pytest -sv tests
 ```
+
+### Extend
+To add new resource follow these steps:
+
