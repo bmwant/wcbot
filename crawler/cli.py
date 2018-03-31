@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-
-"""Console script for wcbot."""
 import asyncio
 import click
 

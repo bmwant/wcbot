@@ -12,6 +12,8 @@ tox = "*"
 pytest = "*"
 "aiohttp-jinja2" = "*"
 click = "*"
+aioredis = "*"
 
 
 [dev-packages]
+
