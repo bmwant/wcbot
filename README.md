@@ -12,6 +12,11 @@ $ python runserver.py
 or using CLI scripts
 ```
 ```
+You may need to 
+```
+$ export PYTHONPATH=`pwd`
+```
+in case you encounter some import errors.
 
 ### Test
 ```

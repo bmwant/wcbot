@@ -7,8 +7,7 @@ import pytest
 
 from click.testing import CliRunner
 
-from wcbot import wcbot
-from wcbot import cli
+from crawler import cli
 
 
 @pytest.fixture

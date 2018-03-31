@@ -7,7 +7,7 @@ import aiohttp_jinja2
 from aiohttp import web
 
 import config
-from wcbot import setup_routes, setup_static_routes
+from webapp import setup_routes, setup_static_routes
 
 
 def run():
