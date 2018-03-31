@@ -2,7 +2,8 @@
 import asyncio
 import click
 
-from crawler import factory
+from crawler.factory import Factory
+from crawler.scheduler import Scheduler
 
 
 @click.group()
@@ -11,10 +12,12 @@ def cli():
 
 
 async def test_me():
-    g = factory.main()
-    r = g.requester
-    await r.request('http://httpbin.org/get')
-    await r.close()
+    factory = Factory()
+    await factory.init_cache()
+    factory.load_meta()
+    tasks = factory.create()
+    scheduler = Scheduler(tasks=tasks)
+    await scheduler.run()
 
 
 @cli.command()
