@@ -1,0 +1,14 @@
+---
+
+- name: William Hill
+  url: "http://sports.williamhill.com"
+
+- name: bet365
+  url: "https://mobile.bet365.com"
+
+- name: Paddy Power
+  url: "https://www.paddypower.com/bet"
+
+- name: Sky Bet
+  url: "https://www.skybet.com"
+  use_proxy: true

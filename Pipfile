@@ -13,6 +13,8 @@ pytest = "*"
 "aiohttp-jinja2" = "*"
 click = "*"
 aioredis = "*"
+pyyaml = "*"
+attrs = "*"
 
 
 [dev-packages]

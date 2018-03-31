@@ -18,6 +18,7 @@ async def test_me():
     tasks = factory.create()
     scheduler = Scheduler(tasks=tasks)
     await scheduler.run()
+    # Add cleanup for scheduler
 
 
 @cli.command()

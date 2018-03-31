@@ -5,13 +5,19 @@ from utils import get_logger
 
 
 class Grabber(object):
-    def __init__(self, base_url, requester=None, parser=None, cache=None):
-        name = self.__class__.__name__.lower()
-        self.base_url = base_url
+    def __init__(self, name, requester=None, parser=None, cache=None):
+        self.name = name
         self.requester = requester
         self.parser = parser
         self.cache = cache
-        self.logger = get_logger(name)
+        self.logger = get_logger(self.__class__.__name__.lower())
 
     def __await__(self):
-        return self.requester.request(self.base_url)
+        return self.update()
+
+    async def update(self):
+        response = await self.requester.request()
+        data = self.parser.parse(response)
+        if self.cache is not None:
+            await self.cache.set(self.name, data)
+        return data

@@ -1,8 +1,5 @@
 """
-http://sports.williamhill.com
-https://mobile.bet365.com
-https://www.paddypower.com/bet
-https://www.skybet.com
+Class handling requests to remote resources.
 """
 import aiohttp
 
@@ -26,7 +23,10 @@ class Requester(object):
         if self._session is not None:
             await self._session.close()
 
-    async def request(self, url):
+    async def request(self, url=None):
+        if url is None:
+            url = self.base_url
+
         async with self.session.get(url) as resp:
             print(resp.status)
-            print(await resp.text())
+            return await resp.text()
