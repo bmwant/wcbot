@@ -7,11 +7,21 @@ import aiohttp_jinja2
 from aiohttp import web
 
 import config
-from webapp import setup_routes, setup_static_routes
+from utils import get_logger
+from webapp import (
+    setup_routes,
+    setup_static_routes,
+    setup_cache,
+    destroy_cache,
+)
 
 
 def run():
     app = web.Application()
+    logger = get_logger('webapp')
+    app.logger = logger
+    app.on_startup.append(setup_cache)
+    app.on_shutdown.append(destroy_cache)
     setup_routes(app)
     setup_static_routes(app)
     aiohttp_jinja2.setup(

@@ -1,11 +1,5 @@
 # -*- coding: utf-8 -*-
-
-"""Top-level package for wcbot."""
-
-__author__ = """Misha Behersky"""
-__email__ = 'bmwant@gmail.com'
-__version__ = '0.1.0'
-
+import aioredis
 
 import config
 from . import views
@@ -23,3 +17,13 @@ def setup_static_routes(app):
                           path=config.PROJECT_ROOT / 'node_modules',
                           name='node_modules')
 
+
+async def setup_cache(app):
+    redis = await aioredis.create_redis(config.REDIS_URI)
+    app['cache'] = redis
+
+
+async def destroy_cache(app):
+    redis = app['cache']
+    redis.close()
+    await redis.wait_closed()
