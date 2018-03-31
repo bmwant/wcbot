@@ -1,4 +1,7 @@
+from abc import ABC, abstractmethod
 
 
-class BaseParser(object):
-    pass
+class BaseParser(ABC):
+    @abstractmethod
+    def parse(self, html):
+        pass

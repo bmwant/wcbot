@@ -5,10 +5,13 @@
 
 - name: bet365
   url: "https://mobile.bet365.com"
+  parser: "dummy_parser"
 
 - name: Paddy Power
   url: "https://www.paddypower.com/bet"
+  parser: "paddy_power"
 
 - name: Sky Bet
   url: "https://www.skybet.com"
   use_proxy: true
+  parser: "sky_bet"
