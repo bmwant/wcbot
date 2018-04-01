@@ -16,10 +16,9 @@ from crawler.cache import Cache
 
 class Factory(object):
     def __init__(self, resources=None):
-        name = self.__class__.__name__.lower()
         self.resources = resources or []
         self.cache = None
-        self.logger = get_logger(name)
+        self.logger = get_logger(self.__class__.__name__.lower())
 
     def load_meta(self):
         self.logger.debug('Loading resources metainformation..')

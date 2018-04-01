@@ -1,7 +1,11 @@
 """
 Class handling requests to remote resources.
 """
+from http import HTTPStatus
+
 import aiohttp
+
+from utils import get_logger
 
 
 class Requester(object):
@@ -9,6 +13,7 @@ class Requester(object):
         self.base_url = base_url
         self.proxy = proxy
         self._session = None
+        self.logger = get_logger(self.__class__.__name__.lower())
 
     def install_proxy(self, proxy):
         pass
@@ -28,5 +33,6 @@ class Requester(object):
             url = self.base_url
 
         async with self.session.get(url) as resp:
-            print(resp.status)
+            if resp.status != HTTPStatus.OK:
+                self.logger.debug(f'{url} respond {resp.status}')
             return await resp.text()
