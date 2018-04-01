@@ -1,5 +1,10 @@
 ## wcbot
-World Cup 2018 Win Outright
+World Cup 2018 Win Outright Comparison.
+
+### Prerequisites
+Make sure you have next items installed:
+* pipenv
+* geckodriver
 
 ### Installation
 ```
