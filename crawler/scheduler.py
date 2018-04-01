@@ -11,10 +11,10 @@ class Scheduler(object):
     def __init__(self, tasks=None, interval=config.UPDATE_PERIOD):
         self.tasks = tasks or []
         self.interval = interval
-        name = self.__class__.__name__.lower()
-        self.logger = get_logger(name)
+        self.logger = get_logger(self.__class__.__name__.lower())
 
     async def run(self):
+        # todo: add exceptions handling within child processes
         while True:
             await asyncio.gather(*self.tasks)
             self.logger.info('Waiting %s seconds to make next update...' %

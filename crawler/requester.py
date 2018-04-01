@@ -31,7 +31,7 @@ class Requester(object):
     async def request(self, url=None):
         if url is None:
             url = self.base_url
-
+        self.logger.info(f'Requesting {url}')
         async with self.session.get(url) as resp:
             if resp.status != HTTPStatus.OK:
                 self.logger.debug(f'{url} respond {resp.status}')
