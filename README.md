@@ -4,7 +4,9 @@ World Cup 2018 Win Outright Comparison.
 ### Prerequisites
 Make sure you have next items installed:
 * pipenv
-* geckodriver
+* Firefox + [geckodriver]
+* Chrome + [chromedriver](https://chromedriver.storage.googleapis.com/index.html)
+
 
 ### Installation
 ```

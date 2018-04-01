@@ -12,4 +12,5 @@ UPDATE_PERIOD = 10
 RESOURCES_FILEPATH = PROJECT_ROOT / 'resources.yml'
 
 GECKO_DRIVER_PATH = PROJECT_ROOT / 'lib' / 'geckodriver'
+CHROME_DRIVER_PATH = PROJECT_ROOT / 'lib' / 'chromedriver'
 

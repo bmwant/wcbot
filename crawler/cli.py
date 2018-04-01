@@ -27,5 +27,10 @@ def test():
     loop.run_until_complete(test_me())
 
 
+@cli.command()
+def check_drivers():
+    pass
+
+
 if __name__ == '__main__':
     cli()
