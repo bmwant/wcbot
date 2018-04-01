@@ -20,10 +20,12 @@ class FirefoxDriver(BaseDriver):
         firefox_profile.set_preference(
             'dom.ipc.plugins.enabled.libflashplayer.so', 'false')
 
-        self._driver = webdriver.Firefox(
+        driver = webdriver.Firefox(
             executable_path=self.EXECUTABLE_PATH,
             firefox_options=firefox_options,
             log_path='/tmp/geckodriver.log',
             firefox_profile=firefox_profile,
         )
-        self.driver.set_page_load_timeout(10)
+        driver.set_page_load_timeout(10)
+
+        self._driver = driver
