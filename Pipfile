@@ -15,6 +15,7 @@ click = "*"
 aioredis = "*"
 pyyaml = "*"
 attrs = "*"
+coloredlogs = "*"
 
 
 [dev-packages]

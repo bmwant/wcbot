@@ -1,11 +1,12 @@
 import logging
+import coloredlogs
 
 
 FORMAT = '[%(name)s] %(levelname)s:%(message)s'
 FORMATTER = logging.Formatter(fmt=FORMAT)
 
 
-def get_logger(name, level=logging.DEBUG):
+def get_logger(name, level=logging.DEBUG, colored=False):
     logger = logging.getLogger(name)
     logger.propagate = False
     logger.setLevel(level)
@@ -14,5 +15,8 @@ def get_logger(name, level=logging.DEBUG):
         handler = logging.StreamHandler()
         handler.setFormatter(fmt=FORMATTER)
         logger.addHandler(handler)
+
+    if colored:
+        coloredlogs.install(level=level, logger=logger)
 
     return logger
