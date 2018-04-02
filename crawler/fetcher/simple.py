@@ -6,17 +6,14 @@ from http import HTTPStatus
 import aiohttp
 
 from utils import get_logger
+from crawler.fetcher import BaseFetcher
 
 
-class Requester(object):
-    def __init__(self, base_url, proxy=None):
-        self.base_url = base_url
-        self.proxy = proxy
+class SimpleFetcher(BaseFetcher):
+    def __init__(self, base_url, *, proxy=None):
+        super().__init__(base_url, proxy=proxy)
         self._session = None
         self.logger = get_logger(self.__class__.__name__.lower())
-
-    def install_proxy(self, proxy):
-        pass
 
     @property
     def session(self):
