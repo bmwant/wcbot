@@ -1,4 +1,6 @@
 import time
+import asyncio
+from concurrent.futures import ThreadPoolExecutor
 
 from crawler.fetcher import BaseFetcher
 from crawler.drivers.chrome import ChromeDriver
@@ -6,6 +8,7 @@ from crawler.drivers.chrome import ChromeDriver
 
 class BrowserFetcher(BaseFetcher):
     DEFAULT_DRIVER_WRAPPER = ChromeDriver
+    DEFAULT_WAIT_TIME = 2
 
     def __init__(self, base_url, *,
                  driver_wrapper=None, xpath=None, proxy=None):
@@ -17,11 +20,19 @@ class BrowserFetcher(BaseFetcher):
         self.driver = driver_wrapper.driver
 
     async def request(self, url=None):
-        pass
+        if url is None:
+            url = self.base_url
+
+        with ThreadPoolExecutor(max_workers=1) as executor:
+            loop = asyncio.get_event_loop()
+            future = loop.run_in_executor(
+                executor, self._get, url, self.DEFAULT_WAIT_TIME)
+        return await future
 
     def _get(self, url: str, wait: int=0) -> str:
         self.driver.delete_all_cookies()
         self.driver.get(url)
+        # Wait for js on page to render
         time.sleep(wait)
         if self.xpath is not None:
             return self.driver. \
@@ -30,8 +41,14 @@ class BrowserFetcher(BaseFetcher):
 
         return self.driver.page_source
 
-    async def close(self):
+    def _close(self):
         self.driver.close()
+
+    async def close(self):
+        with ThreadPoolExecutor(max_workers=1) as executor:
+            loop = asyncio.get_event_loop()
+            future = loop.run_in_executor(executor, self._close)
+            await future
 
 
 def main():
