@@ -4,7 +4,7 @@ import pytest
 
 from click.testing import CliRunner
 
-from crawler import cli
+import cli
 
 
 @pytest.fixture

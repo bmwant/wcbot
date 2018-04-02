@@ -5,8 +5,14 @@ from crawler.drivers.chrome import ChromeDriver
 
 
 class BrowserFetcher(BaseFetcher):
-    def __init__(self, base_url, driver_wrapper, *, xpath=None, proxy=None):
+    DEFAULT_DRIVER_WRAPPER = ChromeDriver
+
+    def __init__(self, base_url, *,
+                 driver_wrapper=None, xpath=None, proxy=None):
         super().__init__(base_url, proxy=proxy)
+        if driver_wrapper is None:
+            driver_wrapper = self.DEFAULT_DRIVER_WRAPPER()
+
         self.xpath = xpath
         self.driver = driver_wrapper.driver
 

@@ -11,10 +11,11 @@ def cli():
     pass
 
 
-async def test_me():
+async def schedule_monitoring():
     factory = Factory()
     await factory.init_cache()
-    factory.load_meta()
+    factory.load_resources()
+    factory.load_teams()
     tasks = factory.create()
     scheduler = Scheduler(tasks=tasks)
     await scheduler.run()
@@ -22,9 +23,9 @@ async def test_me():
 
 
 @cli.command()
-def test():
+def monitor():
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(test_me())
+    loop.run_until_complete(schedule_monitoring())
 
 
 @cli.command()
