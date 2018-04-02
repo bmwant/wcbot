@@ -1,1 +1,1 @@
-from crawler.parser.base import BaseParser
+from crawler.parser.base import BaseParser, BaseEngine

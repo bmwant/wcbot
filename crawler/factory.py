@@ -9,7 +9,7 @@ import yaml
 import config
 from utils import get_logger
 from crawler.models import Resource
-from crawler.requester import Requester
+from crawler.fetcher.requester import Requester
 from crawler.grabber import Grabber
 from crawler.cache import Cache
 

@@ -17,6 +17,8 @@ pyyaml = "*"
 attrs = "*"
 coloredlogs = "*"
 selenium = "*"
+"beautifulsoup4" = "*"
+"html5lib" = "*"
 
 
 [dev-packages]
