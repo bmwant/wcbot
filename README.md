@@ -10,8 +10,8 @@ parser engines, choose cache backend for any taste
 
 ### Prerequisites
 Make sure you have next items installed:
-* pipenv
-* Redis
+* [pipenv](https://docs.pipenv.org/)
+* [Redis](https://redis.io/)
 * Chrome + [chromedriver](https://chromedriver.storage.googleapis.com/index.html)
 
 ### Installation
@@ -41,4 +41,7 @@ $ pytest -sv tests
 
 ### Extend
 To add new resource follow these steps:
+1. one
+2. two
+3. three
 
