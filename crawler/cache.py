@@ -29,4 +29,3 @@ class Cache(object):
     async def close(self):
         self._pool.close()
         await self._pool.wait_closed()
-
