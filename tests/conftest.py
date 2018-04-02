@@ -44,3 +44,18 @@ def pytest_runtest_setup(item):
     if 'run_loop' in item.keywords:
         if 'loop' not in item.fixturenames:
             item.fixturenames.append('loop')
+
+    if 'external' in item.keywords and \
+            not item.config.getoption('--run-external'):
+        pytest.skip('Need to specify --run-external to run tests that uses '
+                    'external resources')
+
+
+def pytest_addoption(parser):
+    """
+    Skip tests that rely on external resources unless explicitly specified.
+    """
+    parser.addoption('--run-external', action='store_true',
+                     default=False,
+                     help='Run tests that rely on external resources '
+                          '(e.g. redis, web-sites)')

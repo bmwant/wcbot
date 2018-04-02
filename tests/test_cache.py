@@ -12,6 +12,7 @@ def cache(loop):
 
 
 @pytest.mark.run_loop
+@pytest.mark.external
 async def test_json_data(cache):
     data = {
         'team1': 1,
