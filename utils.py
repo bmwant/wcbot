@@ -6,7 +6,7 @@ FORMAT = '[%(name)s] %(levelname)s:%(message)s'
 FORMATTER = logging.Formatter(fmt=FORMAT)
 
 
-def get_logger(name, level=logging.DEBUG, colored=False):
+def get_logger(name='default', level=logging.DEBUG, colored=False):
     logger = logging.getLogger(name)
     logger.propagate = False
     logger.setLevel(level)

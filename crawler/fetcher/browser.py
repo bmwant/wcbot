@@ -58,11 +58,10 @@ class BrowserFetcher(BaseFetcher):
 def main():
     from crawler.proxy import Proxy
     base_url = 'https://www.skybet.com'
+    url = 'https://m.skybet.com/football/world-cup-2018/event/16742642'
     proxy = Proxy(ip='163.172.175.210', port=3128)
-    driver = ChromeDriver(proxy_uri=proxy.uri)
-    f = BrowserFetcher(base_url, driver_wrapper=driver)
-    resp = f._get(url=base_url, wait=3)
-    print(resp)
+    driver = ChromeDriver(proxy_uri=proxy.chrome_uri)
+    driver._driver.get(url)
 
 
 if __name__ == '__main__':

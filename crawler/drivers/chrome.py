@@ -18,7 +18,6 @@ class ChromeDriver(BaseDriver):
             chrome_options.add_argument(f'--proxy-server={proxy_uri}')
 
         chrome_options.binary_location = self.BINARY_PATH
-
         driver = webdriver.Chrome(
             executable_path=self.EXECUTABLE_PATH,
             chrome_options=chrome_options,

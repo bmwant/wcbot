@@ -14,3 +14,7 @@ class Proxy(object):
     @property
     def uri(self):
         return f'http://{self.ip}:{self.port}/'
+
+    @property
+    def chrome_uri(self):
+        return f'{self.ip}:{self.port}'
