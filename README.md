@@ -11,6 +11,7 @@ parser engines, choose cache backend for any taste
 ### Prerequisites
 Make sure you have next items installed:
 * pipenv
+* Redis
 * Chrome + [chromedriver](https://chromedriver.storage.googleapis.com/index.html)
 
 ### Installation
@@ -24,6 +25,8 @@ $ python runserver.py
 or using CLI scripts
 ```
 $ python cli.py monitor
+$ redis-cli
+> get [resource name]
 ```
 You may need to 
 ```

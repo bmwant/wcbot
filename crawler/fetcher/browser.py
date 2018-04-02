@@ -2,6 +2,7 @@ import time
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
 
+from utils import get_logger
 from crawler.fetcher import BaseFetcher
 from crawler.drivers.chrome import ChromeDriver
 
@@ -18,11 +19,13 @@ class BrowserFetcher(BaseFetcher):
 
         self.xpath = xpath
         self.driver = driver_wrapper.driver
+        self.logger = get_logger(self.__class__.__name__.lower())
 
     async def request(self, url=None):
         if url is None:
             url = self.base_url
 
+        self.logger.info(f'Requesting {url}')
         with ThreadPoolExecutor(max_workers=1) as executor:
             loop = asyncio.get_event_loop()
             future = loop.run_in_executor(

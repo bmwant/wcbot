@@ -1,20 +1,20 @@
 ---
 
-- name: William Hill
-  url: "http://sports.williamhill.com"
-
-- name: bet365
-  url: "https://mobile.bet365.com"
-  parser: "dummy"
-  fetcher: "simple"
+#- name: William Hill
+#  url: "http://sports.williamhill.com"
+#
+#- name: bet365
+#  url: "https://mobile.bet365.com"
+#  parser: "dummy"
+#  fetcher: "simple"
 
 - name: Paddy Power
   url: "https://www.paddypower.com/bet"
   parser: "paddy_power"
   fetcher: "browser"
 
-- name: Sky Bet
-  url: "https://www.skybet.com"
-  parser: "sky_bet"
-  fetcher: "simple"
-  use_proxy: true
+#- name: Sky Bet
+#  url: "https://www.skybet.com"
+#  parser: "sky_bet"
+#  fetcher: "simple"
+#  use_proxy: true

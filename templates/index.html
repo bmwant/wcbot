@@ -13,49 +13,39 @@
 </head>
 <body>
 <div class="siimple-navbar siimple-navbar--yellow siimple-navbar--fluid">
-    <div class="siimple-layout--left">
-        <a href="/" class="siimple-navbar-title">wcbot</a>
-    </div>
-    <div class="siimple-layout--right">
-        <a href="#" class="siimple-navbar-link" target="_blank">github</a>
-    </div>
+  <div class="siimple-layout--left">
+    <a href="/" class="siimple-navbar-title">wcbot</a>
+  </div>
+  <div class="siimple-layout--right">
+    <a href="https://github.com/bmwant/wcbot" class="siimple-navbar-link" target="_blank">github</a>
+  </div>
 </div>
 <div class="siimple-grid">
 
-    <div class="siimple-grid-row">
-        <div class="siimple-grid-col siimple-grid-col--12">
-            <span class="siimple-tag siimple-tag--navy">Navy tag</span>
-            <span class="siimple-tag siimple-tag--green">{{ value }}</span>
-            <span class="siimple-tag siimple-tag--teal">Teal tag</span>
-            <span class="siimple-tag siimple-tag--blue">Blue tag</span>
-        </div>
-    </div>
-
   <div class="siimple-grid-row">
     <div class="siimple-grid-col siimple-grid-col--6">
-            <div class="siimple-table">
-                <div class="siimple-table-header">
-                    <div class="siimple-table-row">
-                        <div class="siimple-table-cell">Header 1</div>
-                        <div class="siimple-table-cell">Header 2</div>
-                        <div class="siimple-table-cell">Header 3</div>
-                    </div>
-                </div>
-                <div class="siimple-table-body">
-                    <div class="siimple-table-row">
-                        <div class="siimple-table-cell">Cell 1</div>
-                        <div class="siimple-table-cell">Cell 2</div>
-                        <div class="siimple-table-cell">Cell 3</div>
-                    </div>
-                    <div class="siimple-table-row">
-                        <div class="siimple-table-cell">Cell 1</div>
-                        <div class="siimple-table-cell">Cell 2</div>
-                        <div class="siimple-table-cell">Cell 3</div>
-                    </div>
-                </div>
-            </div>
+      <div class="siimple-table siimple-table--hover">
+        <div class="siimple-table-header">
+          <div class="siimple-table-row">
+            <div class="siimple-table-cell">Team</div>
+            {% for resource_name in resources.keys() %}
+            <div class="siimple-table-cell">{{ resource_name }}</div>
+            {% endfor %}
+          </div>
         </div>
+        <div class="siimple-table-body">
+          {% for team in teams %}
+            <div class="siimple-table-row">
+              <div class="siimple-table-cell">{{ team }}</div>
+              {% for data in resources.values() %}
+              <div class="siimple-table-cell">{{ data[team] }}</div>
+              {% endfor %}
+            </div>
+          {% endfor %}
+        </div>
+      </div>
     </div>
+  </div>
 
 </div>
 </body>

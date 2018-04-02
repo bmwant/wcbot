@@ -1,5 +1,5 @@
+import json
 import aioredis
-
 import config
 
 
@@ -19,11 +19,12 @@ class Cache(object):
         )
 
     async def set(self, key, value):
-        # Add json serialization-deserialization
-        return await self._pool.set(key, value)
+        data = json.dumps(value)
+        return await self._pool.set(key, data)
 
     async def get(self, key):
-        return await self._pool.get(key)
+        data = await self._pool.get(key)
+        return json.loads(data)
 
     async def close(self):
         self._pool.close()
