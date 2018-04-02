@@ -9,7 +9,6 @@ import yaml
 import config
 from utils import get_logger
 from crawler.models import Resource
-from crawler.fetcher.requester import Requester
 from crawler.grabber import Grabber
 from crawler.cache import Cache
 
@@ -46,14 +45,18 @@ class Factory(object):
                 f'No such class {class_name} within module {module_name}.')
         return parser_cls()
 
+
+    def get_fetcher(self, fetcher_name):
+        pass
+
     def create(self):
         grabbers = []
         for res in self.resources:
-            requester = Requester(base_url=res.url)
+            fetcher = self.get_fetcher(res.fetcher)
             parser = self.get_parser(res.parser)
             grabber = Grabber(
                 name=res.name,
-                requester=requester,
+                fetcher=fetcher,
                 parser=parser,
                 cache=self.cache,
             )
