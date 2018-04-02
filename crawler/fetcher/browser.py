@@ -8,14 +8,15 @@ from crawler.drivers.chrome import ChromeDriver
 
 
 class BrowserFetcher(BaseFetcher):
-    DEFAULT_DRIVER_WRAPPER = ChromeDriver
+    DEFAULT_DRIVER_CLS = ChromeDriver
     DEFAULT_WAIT_TIME = 2
 
     def __init__(self, base_url, *,
                  driver_wrapper=None, xpath=None, proxy=None):
         super().__init__(base_url, proxy=proxy)
         if driver_wrapper is None:
-            driver_wrapper = self.DEFAULT_DRIVER_WRAPPER()
+            proxy_uri = proxy.uri if proxy else None
+            driver_wrapper = self.DEFAULT_DRIVER_CLS(proxy_uri=proxy_uri)
 
         self.xpath = xpath
         self.driver = driver_wrapper.driver
@@ -55,14 +56,13 @@ class BrowserFetcher(BaseFetcher):
 
 
 def main():
-    from crawler.parser.paddy_power import PaddyPowerParser
-    p = PaddyPowerParser()
-    base_url = 'https://www.paddypower.com/bet'
-    xpath = '/html/body/page-container/div/main/div/content-managed-page/div/div/div/div[3]/div/div[2]/div/avb-coupon/div/div'
-    chrome_driver = ChromeDriver()
-    f = BrowserFetcher(base_url, driver_wrapper=chrome_driver, xpath=xpath)
+    from crawler.proxy import Proxy
+    base_url = 'https://www.skybet.com'
+    proxy = Proxy(ip='163.172.175.210', port=3128)
+    driver = ChromeDriver(proxy_uri=proxy.uri)
+    f = BrowserFetcher(base_url, driver_wrapper=driver)
     resp = f._get(url=base_url, wait=3)
-    p.parse(resp)
+    print(resp)
 
 
 if __name__ == '__main__':

@@ -9,12 +9,13 @@ import yaml
 import config
 from utils import get_logger
 from crawler.models import Resource
+from crawler.proxy import Proxy
 from crawler.grabber import Grabber
 from crawler.cache import Cache
 
 
 class Factory(object):
-    def __init__(self, resources=None, teams=[]):
+    def __init__(self, resources=None, teams=None):
         self.resources = resources or []
         self.teams = teams or []
         self.cache = None
@@ -69,8 +70,11 @@ class Factory(object):
             raise ValueError(
                 f'No such class {class_name} within module {module_name}.')
 
-        # todo: install proxy
-        return fetcher_cls(base_url=resource.url)
+        proxy = None
+        if resource.proxy.use:
+            proxy = Proxy(ip=resource.proxy.ip, port=resource.proxy.port)
+
+        return fetcher_cls(base_url=resource.url, proxy=proxy)
 
     def create(self):
         grabbers = []
