@@ -15,7 +15,7 @@ def cache(loop):
 async def test_json_data(cache):
     data = {
         'team1': 1,
-        'team2': 2
+        'team2': 2,
     }
 
     await cache.set('test', data)

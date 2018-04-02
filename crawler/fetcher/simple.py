@@ -29,7 +29,11 @@ class SimpleFetcher(BaseFetcher):
         if url is None:
             url = self.base_url
         self.logger.info(f'Requesting {url}')
-        async with self.session.get(url) as resp:
+
+        proxy_uri = self.proxy.uri if self.proxy else None
+        async with self.session.get(url, proxy=proxy_uri) as resp:
             if resp.status != HTTPStatus.OK:
                 self.logger.debug(f'{url} respond {resp.status}')
+                raise RuntimeError(f'Incorrect response: {resp.status}')
+
             return await resp.text()

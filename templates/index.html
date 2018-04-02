@@ -38,7 +38,7 @@
             <div class="siimple-table-row">
               <div class="siimple-table-cell">{{ team }}</div>
               {% for data in resources.values() %}
-              <div class="siimple-table-cell">{{ data[team] }}</div>
+              <div class="siimple-table-cell">{{ data[team] |round(3) if data[team] else '-' }}</div>
               {% endfor %}
             </div>
           {% endfor %}

@@ -1,6 +1,10 @@
 import aiohttp_jinja2
 
-from webapp.utils import load_teams, load_resources
+from webapp.utils import (
+    load_teams,
+    load_resources,
+    get_cached_value,
+)
 
 
 @aiohttp_jinja2.template('index.html')
@@ -14,10 +18,10 @@ async def index(request):
 
     resources = {}
     for resource in available_resources:
-        resource_data = await cache.get(resource)
+        resource_data = await get_cached_value(cache=cache,
+                                               key=resource)
         resources[resource] = resource_data
 
-    import pdb; pdb.set_trace()
     return {
         'teams': teams,
         'resources': resources
