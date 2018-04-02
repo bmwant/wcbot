@@ -8,4 +8,4 @@ __all__ = (
 
 class DummyParser(BaseParser):
     def parse(self, html):
-        return html
+        return {}

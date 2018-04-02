@@ -14,8 +14,9 @@ from crawler.cache import Cache
 
 
 class Factory(object):
-    def __init__(self, resources=None):
+    def __init__(self, resources=None, teams=[]):
         self.resources = resources or []
+        self.teams = teams or []
         self.cache = None
         self.logger = get_logger(self.__class__.__name__.lower())
 
@@ -27,6 +28,9 @@ class Factory(object):
 
     def load_teams(self):
         self.logger.debug('Loading teams...')
+        with open(config.TEAMS_FILEPATH) as f:
+            teams = yaml.load(f.read())
+        self.teams = teams
 
     async def init_cache(self):
         self.logger.debug('Initializing cache...')

@@ -1,5 +1,5 @@
 """
-Proxy module allowing `Requester` to use proxy servers.
+Proxy module allowing fetchers to use proxy servers.
 """
 
 
