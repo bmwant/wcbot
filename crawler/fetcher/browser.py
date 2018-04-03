@@ -3,6 +3,7 @@ import asyncio
 from concurrent.futures import ThreadPoolExecutor
 
 from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import WebDriverException
 
 from utils import get_logger
 from crawler.fetcher import BaseFetcher
@@ -55,25 +56,47 @@ class BrowserFetcher(BaseFetcher):
         self.driver.get(url)
         # Wait for js on page to render
         time.sleep(wait)
+
+        self._do_actions()
+
+        # Crop page to particular region if needed
         if self.xpath is not None:
             return self.driver. \
                 find_element_by_xpath(self.xpath). \
                 get_attribute('outerHTML')
 
-        self._do_actions()
         return self.driver.page_source
 
     def _do_actions(self):
         """
-        Make some actions on a page like clicking tabs or open collapsed elements.
+        Make some actions on a page like clicking tabs or open
+        collapsed elements.
         """
+        expand_elements_text = (
+            # 'Show More',
+            'Show All',
+        )
+        for guess_text in expand_elements_text:
+            try:
+                # Add any logic for common elements here
+                elem = self.driver.find_element_by_xpath(
+                    f'//*[contains(text(), "{guess_text}")]')
+                self._click_element(elem)
+            except NoSuchElementException:
+                pass
+            else:
+                break
+
+    def _click_element(self, elem):
         try:
-            # Add any logic for common elements here
-            elem = self.driver.find_element_by_xpath(
-                '//*[contains(text(), "Show More")]')
             elem.click()
-        except NoSuchElementException:
-            pass
+        except WebDriverException as e:
+            if 'Other element would receive the click' in e.msg:
+                # No matter which exact element is clicked
+                return
+            self.logger.critical(
+                f'Received unexpected error: {e}. '
+                f'Will ignore it, but you may get corrupted/partial results.')
 
     def _close(self):
         self.driver.close()

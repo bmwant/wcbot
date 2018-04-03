@@ -91,22 +91,3 @@ class SkyBetParser(BaseParser):
         result = self.engine.data
         print(result)
         return result
-
-
-"""
-Tree
-
-ul
-li
-div
-div
-div
-    div -> skip it
-    div
-        div -> skip it
-        div
-            N x div
-               div 
-                    div div -> name
-                    div div -> odd
-"""

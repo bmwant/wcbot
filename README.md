@@ -1,5 +1,6 @@
 ## wcbot
 World Cup 2018 Win Outright Comparison.
+
 For implementations details and design notes go straight to 
 [Architecture](resources/ARCHITECTURE.md)
 

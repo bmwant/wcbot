@@ -1,4 +1,7 @@
 ---
+# Teams will be discovered automatically
+# This file is in place only in case you want to limit
+# set of teams
 
 - 'Brazil'
 - 'Germany'
