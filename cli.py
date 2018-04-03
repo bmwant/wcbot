@@ -19,7 +19,7 @@ async def schedule_monitoring():
     tasks = factory.create()
     scheduler = Scheduler(tasks=tasks)
     await scheduler.run()
-    # Add cleanup for scheduler
+    # todo: add cleanup for scheduler
 
 
 @cli.command()

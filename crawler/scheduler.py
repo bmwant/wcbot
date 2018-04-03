@@ -20,3 +20,6 @@ class Scheduler(object):
             self.logger.info('Waiting %s seconds to make next update...' %
                              self.interval)
             await asyncio.sleep(self.interval)
+
+    async def run_once(self):
+        pass
