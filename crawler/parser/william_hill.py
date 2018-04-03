@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 from crawler.parser import BaseParser, BaseEngine
 
 
-class _BSEngine(BaseEngine):
+class _RegexEngine(BaseEngine):
     def process(self, html):
         html = html.replace('<!---->', '')
         soup = BeautifulSoup(html, 'html5lib')
@@ -34,10 +34,15 @@ class _BSEngine(BaseEngine):
             return text
 
 
-class PaddyPowerParser(BaseParser):
-    def __init__(self, engine_cls=_BSEngine):
+class WilliamHillParser(BaseParser):
+    def __init__(self, engine_cls=_RegexEngine):
         self.engine = engine_cls()
 
     def parse(self, html):
         self.engine.process(html)
         return self.engine.data
+
+
+"""
+tree sketch
+"""
