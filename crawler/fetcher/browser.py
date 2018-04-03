@@ -14,19 +14,34 @@ class BrowserFetcher(BaseFetcher):
     def __init__(self, base_url, *,
                  driver_cls=None, xpath=None, proxy=None):
         super().__init__(base_url, proxy=proxy)
-        proxy_uri = proxy.uri if proxy else None
-        driver_cls = driver_cls or self.DEFAULT_DRIVER_CLS
-        driver_wrapper = driver_cls(proxy_uri=proxy_uri)
-        self.driver = driver_wrapper.driver
 
+        driver_cls = driver_cls or self.DEFAULT_DRIVER_CLS
+        proxy_uri = self._get_proxy_uri(proxy, driver_cls)
+        driver_wrapper = driver_cls(proxy_uri=proxy_uri)
+
+        self.driver = driver_wrapper.driver
+        self.proxy_uri = proxy_uri
         self.xpath = xpath
         self.logger = get_logger(self.__class__.__name__.lower())
+
+    def _get_proxy_uri(self, proxy, driver_cls):
+        """
+        Proxy format may vary based on browser driver used. This helpers allows
+        to figure out which format is correct.
+        """
+        proxy_uri = None
+        if proxy and driver_cls == ChromeDriver:
+            proxy_uri = proxy.chrome_uri
+        elif proxy:
+            proxy_uri = proxy.uri
+
+        return proxy_uri
 
     async def request(self, url=None):
         if url is None:
             url = self.base_url
 
-        self.logger.info(f'Requesting {url}')
+        self.logger.info(f'Requesting {url} with proxy: {self.proxy_uri}')
         with ThreadPoolExecutor(max_workers=1) as executor:
             loop = asyncio.get_event_loop()
             future = loop.run_in_executor(
@@ -53,16 +68,3 @@ class BrowserFetcher(BaseFetcher):
             loop = asyncio.get_event_loop()
             future = loop.run_in_executor(executor, self._close)
             await future
-
-
-def main():
-    from crawler.proxy import Proxy
-    base_url = 'https://www.skybet.com'
-    url = 'https://m.skybet.com/football/world-cup-2018/event/16742642'
-    proxy = Proxy(ip='163.172.175.210', port=3128)
-    driver = ChromeDriver(proxy_uri=proxy.chrome_uri)
-    driver._driver.get(url)
-
-
-if __name__ == '__main__':
-    main()

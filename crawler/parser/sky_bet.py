@@ -88,7 +88,9 @@ class SkyBetParser(BaseParser):
 
     def parse(self, html):
         self.engine.process(html)
-        return self.engine.data
+        result = self.engine.data
+        print(result)
+        return result
 
 
 """
