@@ -7,65 +7,84 @@ class _HTMLParserEngine(HTMLParser, BaseEngine):
     def __init__(self):
         super().__init__()
 
-        self.resulting_html = ''
-        self._appending = False
-        self._data_buf = ''
-        self._tags_stack = []
         self._data = {}
-        self._ip = 0  # index pointer
-        self._required_stack = [
-            'avb-item',
-            'ui-scoreboard-coupon',
-            'ui-scoreboard-runner',
-            'span',
-        ]
+        self._team_class = None
+        self._odd_class = None
+        self._team_found = False
+        self._odd_found = False
+
+        self._team_tmp = None
+        self._odd_tmp = None
 
     def process(self, html):
-        pass
+        self.feed(html)
 
-    @staticmethod
-    def _wrap_in_tag(tag, data):
-        return '<{tag}>{data}</{tag}>'.format(tag=tag, data=data.lstrip())
+    def _get_team_class(self):
+        """
+        Implementation is easy to change in case classes will be generated
+        dynamically.
+        """
+        return '_e4y4wr'
+
+    def _get_odd_class(self):
+        """
+        Implementation is easy to change in case classes will be generated
+        dynamically.
+        """
+        return '_1jca28'
+
+    @property
+    def odd_class(self):
+        if self._odd_class is None:
+            self._odd_class = self._get_odd_class()
+
+        return self._odd_class
+
+    @property
+    def team_class(self):
+        if self._team_class is None:
+            self._team_class = self._get_team_class()
+
+        return self._team_class
+
+    def _get_tag_class(self, tag_attrs):
+        for name, value in tag_attrs:
+            if name == 'class':
+                return value
 
     def handle_starttag(self, tag, attrs):
-        # print('Found tag', tag)
-        # if tag == 'avb-item':
-        #     print('Found avb-item')
-        #     return
-        #
-        # if tag == 'ng-switch':
-        #     print('Found ng-switch')
-        #     return
-
-        if tag == 'customtag':
-            print('Found custom tag')
-
-        if tag == 'sport-header':
-            print(tag)
+        if tag == 'div' and self._get_tag_class(attrs) == self.team_class:
+            self._team_found = True
             return
 
-        if tag == 'content-managed-page':
-            print(tag)
+        if tag == 'span' and self._get_tag_class(attrs) == self.odd_class:
+            self._odd_found = True
             return
-
-        if tag == 'promotion':
-            print(tag)
-            return
-
-        if tag == 'single-market-default-layout':
-            print(tag)
-            return
-
-    def handle_endtag(self, tag):
-        pass
 
     def handle_data(self, data):
-        pass
+        if self._team_found:
+            self._team_tmp = data
+            self._team_found = False
+
+        if self._odd_found:
+            self._odd_tmp = data
+            self._odd_found = False
+
+        if self._team_tmp and self._odd_tmp:
+            team = self._team_tmp.strip()
+            odd = self.get_odd_value(self._odd_tmp)
+            self._data[team] = odd
+            self._team_tmp = None
+            self._odd_tmp = None
+
+    def get_odd_value(self, text):
+        nominator, denominator = map(int, text.split('/'))
+        return nominator / denominator
 
 
 class SkyBetParser(BaseParser):
-    def __init__(self, engine=_HTMLParserEngine):
-        self.engine = engine
+    def __init__(self, engine_cls=_HTMLParserEngine):
+        self.engine = engine_cls()
 
     def parse(self, html):
         self.engine.process(html)
@@ -74,4 +93,18 @@ class SkyBetParser(BaseParser):
 
 """
 Tree
+
+ul
+li
+div
+div
+div
+    div -> skip it
+    div
+        div -> skip it
+        div
+            N x div
+               div 
+                    div div -> name
+                    div div -> odd
 """

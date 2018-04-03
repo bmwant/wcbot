@@ -35,8 +35,8 @@ class _BSEngine(BaseEngine):
 
 
 class PaddyPowerParser(BaseParser):
-    def __init__(self, engine=_BSEngine):
-        self.engine = engine()
+    def __init__(self, engine_cls=_BSEngine):
+        self.engine = engine_cls()
 
     def parse(self, html):
         self.engine.process(html)
