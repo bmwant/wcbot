@@ -7,23 +7,18 @@ class _BSEngine(BaseEngine):
     def process(self, html):
         html = html.replace('<!---->', '')
         soup = BeautifulSoup(html, 'html5lib')
-        team_elem = 'ui-scoreboard-runner'
-        team_class = 'ui-scoreboard-runner__home'
-        teams = [e.getText().strip()
-                 for e in soup.find_all(team_elem, team_class)]
+        items = soup.find_all('div', 'outright-item')
+        data = {}
+        for item in items:
+            team_elem = item.find('p', 'outright-item__runner-name')
+            odd_elem = item.find('button', 'btn-odds')
+            team = team_elem.text.strip()
+            odd = self.get_odd_value(odd_elem.text.strip())
+            data[team] = odd
 
-        get_odds_elems = lambda x: x.find('btn-odds',
-                                          class_='avb-item__btn-odds')
-        get_odds_text = lambda x: x.getText().strip()
-        odds_elems = map(get_odds_elems, soup.find_all('avb-item'))
-        odds = map(get_odds_text, odds_elems)
-        odds_values = map(self.get_odd_value, odds)
-        self._data = dict(zip(teams, odds_values))
+        self._data = data
 
     def get_odd_value(self, text):
-        if text == 'EVS':
-            return text
-
         if '/' in text:
             nominator, denominator = map(int, text.split('/'))
             return nominator / denominator

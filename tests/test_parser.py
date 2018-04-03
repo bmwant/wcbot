@@ -1,5 +1,6 @@
 from crawler.parser.paddy_power import PaddyPowerParser
 from crawler.parser.sky_bet import SkyBetParser
+from crawler.parser.william_hill import WilliamHillParser
 
 
 def test_paddy_power_parser(page_html):
@@ -28,3 +29,5 @@ def test_sky_bet_parser(page_html):
     assert all([isinstance(v, float) for v in data.values()])
 
 
+def test_william_hill_parser():
+    pass
