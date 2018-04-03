@@ -6,8 +6,8 @@ from crawler.parser import BaseParser, BaseEngine
 class _HTMLParserEngine(HTMLParser, BaseEngine):
     def __init__(self):
         super().__init__()
+        BaseEngine.__init__(self)
 
-        self._data = {}
         self._team_class = None
         self._odd_class = None
         self._team_found = False

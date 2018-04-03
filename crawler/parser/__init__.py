@@ -1,6 +1,6 @@
 import re
 
-from abc import ABC, abstractmethod, abstractproperty
+from abc import ABC, abstractmethod
 
 
 class BaseParser(ABC):
@@ -11,7 +11,6 @@ class BaseParser(ABC):
 
 class BaseEngine(ABC):
     def __init__(self):
-        print('Base init is called')
         self._data = {}
 
     @staticmethod
