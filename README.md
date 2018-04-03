@@ -7,12 +7,14 @@ World Cup 2018 Win Outright Comparison.
 * Very extensible: add any fetcher/browser driver/parser, customize
 parser engines, choose cache backend for any taste
 * Convenient process of adding new resource
+* Coverage with unittests and functional tests
 
 ### Prerequisites
 Make sure you have next items installed:
 * [pipenv](https://docs.pipenv.org/)
 * [Redis](https://redis.io/)
-* Chrome + [chromedriver](https://chromedriver.storage.googleapis.com/index.html)
+* [Chrome](https://www.google.com/chrome/) + 
+[chromedriver](https://chromedriver.storage.googleapis.com/index.html)
 
 ### Installation
 ```
@@ -27,6 +29,7 @@ or using CLI scripts
 $ python cli.py monitor
 $ redis-cli
 > get [resource name]
+# e.g. > get "Sky Bet"
 ```
 You may need to 
 ```
@@ -41,7 +44,7 @@ $ pytest -sv tests
 
 ### Extend
 To add new resource follow these steps:
-1. one
-2. two
-3. three
+1. Edit `resources.yml` and add new resource
+2. Add new parser to `crawler.parser` package
+3. Yes, that's it!
 
