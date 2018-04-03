@@ -2,6 +2,8 @@ import time
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
 
+from selenium.common.exceptions import NoSuchElementException
+
 from utils import get_logger
 from crawler.fetcher import BaseFetcher
 from crawler.driver.chrome import ChromeDriver
@@ -58,7 +60,20 @@ class BrowserFetcher(BaseFetcher):
                 find_element_by_xpath(self.xpath). \
                 get_attribute('outerHTML')
 
+        self._do_actions()
         return self.driver.page_source
+
+    def _do_actions(self):
+        """
+        Make some actions on a page like clicking tabs or open collapsed elements.
+        """
+        try:
+            # Add any logic for common elements here
+            elem = self.driver.find_element_by_xpath(
+                '//*[contains(text(), "Show More")]')
+            elem.click()
+        except NoSuchElementException:
+            pass
 
     def _close(self):
         self.driver.close()

@@ -31,3 +31,4 @@ async def test_response_with_proxy(fetcher):
     url = 'https://www.skybet.com'
     resp = await fetcher.request(url)
     assert isinstance(resp, str)
+    assert 'Sky Bet' in resp
