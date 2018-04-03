@@ -10,8 +10,8 @@ from crawler.fetcher import BaseFetcher
 
 
 class SimpleFetcher(BaseFetcher):
-    def __init__(self, base_url, *, proxy=None):
-        super().__init__(base_url, proxy=proxy)
+    def __init__(self, base_url, *, proxy=None, **kwargs):
+        super().__init__(base_url, proxy=proxy, **kwargs)
         self._session = None
         self.logger = get_logger(self.__class__.__name__.lower())
 

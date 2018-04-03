@@ -2,7 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
 import config
-from crawler.drivers import BaseDriver
+from crawler.driver import BaseDriver
 
 
 class ChromeDriver(BaseDriver):

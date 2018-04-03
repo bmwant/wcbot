@@ -19,6 +19,5 @@ class Grabber(object):
         response = await self.fetcher.request()
         data = self.parser.parse(response)
         if self.cache is not None:
-            self.logger.debug('%s -> %s', type(data), data)
             await self.cache.set(self.name, data)
         return data

@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 
 class BaseFetcher(ABC):
-    def __init__(self, base_url, *, proxy=None):
+    def __init__(self, base_url, *, proxy=None, **kwargs):
         self.base_url = base_url
         self.proxy = proxy
 

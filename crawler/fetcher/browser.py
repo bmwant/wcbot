@@ -4,7 +4,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 from utils import get_logger
 from crawler.fetcher import BaseFetcher
-from crawler.drivers.chrome import ChromeDriver
+from crawler.driver.chrome import ChromeDriver
 
 
 class BrowserFetcher(BaseFetcher):
@@ -12,14 +12,14 @@ class BrowserFetcher(BaseFetcher):
     DEFAULT_WAIT_TIME = 2
 
     def __init__(self, base_url, *,
-                 driver_wrapper=None, xpath=None, proxy=None):
+                 driver_cls=None, xpath=None, proxy=None):
         super().__init__(base_url, proxy=proxy)
-        if driver_wrapper is None:
-            proxy_uri = proxy.uri if proxy else None
-            driver_wrapper = self.DEFAULT_DRIVER_CLS(proxy_uri=proxy_uri)
+        proxy_uri = proxy.uri if proxy else None
+        driver_cls = driver_cls or self.DEFAULT_DRIVER_CLS
+        driver_wrapper = driver_cls(proxy_uri=proxy_uri)
+        self.driver = driver_wrapper.driver
 
         self.xpath = xpath
-        self.driver = driver_wrapper.driver
         self.logger = get_logger(self.__class__.__name__.lower())
 
     async def request(self, url=None):

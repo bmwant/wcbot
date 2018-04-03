@@ -38,43 +38,53 @@ class Factory(object):
         self.cache = Cache()
         await self.cache._create_pool()
 
-    def get_parser(self, parser_name):
-        module_name = f'{__package__}.parser.{parser_name}'
+    def _load_cls_from_module(self, subpackage, module_name):
+        """
+        Load class from module name which follows our naming conventions.
+        """
+        full_module_name = f'{__package__}.{subpackage}.{module_name}'
         try:
-            module = importlib.import_module(module_name, package=__package__)
+            module = importlib.import_module(full_module_name)
         except ModuleNotFoundError:
             raise ValueError(
-                f'No such parser: {parser_name}. Check resources file syntax.')
-
-        class_name = f'{parser_name}_parser'.title().replace('_', '')
-        parser_cls = getattr(module, class_name, None)
-        if parser_cls is None:
-            raise ValueError(
-                f'No such class {class_name} within module {module_name}.')
-        return parser_cls()
-
-    def get_fetcher(self, resource):
-        fetcher_name = resource.fetcher
-        module_name = f'{__package__}.fetcher.{fetcher_name}'
-        try:
-            module = importlib.import_module(module_name)
-        except ModuleNotFoundError:
-            raise ValueError(
-                f'No such fetcher: {fetcher_name}. '
+                f'No such {subpackage}: {full_module_name}. '
                 f'Check resources file syntax.'
             )
 
-        class_name = f'{fetcher_name}_fetcher'.title().replace('_', '')
-        fetcher_cls = getattr(module, class_name, None)
-        if fetcher_cls is None:
+        class_name = f'{module_name}_{subpackage}'.title().replace('_', '')
+        cls_obj = getattr(module, class_name, None)
+        if cls_obj is None:
             raise ValueError(
-                f'No such class {class_name} within module {module_name}.')
+                f'No such class {class_name} '
+                f'within module {full_module_name}.'
+            )
+
+        return cls_obj
+
+    def get_parser(self, parser_name):
+        parser_cls = self._load_cls_from_module('parser', parser_name)
+        return parser_cls()
+
+    def get_fetcher(self, resource):
+        fetcher_cfg = resource.fetcher
+        proxy_cfg = resource.proxy
+        fetcher_name = fetcher_cfg.instance
+        driver_name = fetcher_cfg.driver
 
         proxy = None
-        if resource.proxy.use:
+        if proxy_cfg.use:
             proxy = Proxy(ip=resource.proxy.ip, port=resource.proxy.port)
 
-        return fetcher_cls(base_url=resource.url, proxy=proxy)
+        driver_cls = None
+        if driver_name:
+            driver_cls = self._load_cls_from_module('driver', driver_name)
+
+        fetcher_cls = self._load_cls_from_module('fetcher', fetcher_name)
+        return fetcher_cls(
+            base_url=resource.url,
+            proxy=proxy,
+            driver_cls=driver_cls,
+        )
 
     def create(self):
         grabbers = []
