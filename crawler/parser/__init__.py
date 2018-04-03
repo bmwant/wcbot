@@ -1,6 +1,6 @@
 import re
 
-from abc import ABC, abstractmethod
+from abc import ABC, abstractmethod, abstractproperty
 
 
 class BaseParser(ABC):
@@ -10,6 +10,9 @@ class BaseParser(ABC):
 
 
 class BaseEngine(ABC):
+    def __init__(self):
+        self._data = {}
+
     @staticmethod
     def find_tag(tag_name, html_data):
         exp = '<{tag_name}[^>]*>(.*?)</{tag_name}>'.format(tag_name=tag_name)
@@ -18,5 +21,9 @@ class BaseEngine(ABC):
         return result
 
     @abstractmethod
-    def parse(self, html):
+    def process(self, html):
         pass
+
+    @property
+    def data(self):
+        return self._data

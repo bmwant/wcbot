@@ -1,29 +1,77 @@
-from crawler.parser import BaseParser
+from html.parser import HTMLParser
+
+from crawler.parser import BaseParser, BaseEngine
+
+
+class _HTMLParserEngine(HTMLParser, BaseEngine):
+    def __init__(self):
+        super().__init__()
+
+        self.resulting_html = ''
+        self._appending = False
+        self._data_buf = ''
+        self._tags_stack = []
+        self._data = {}
+        self._ip = 0  # index pointer
+        self._required_stack = [
+            'avb-item',
+            'ui-scoreboard-coupon',
+            'ui-scoreboard-runner',
+            'span',
+        ]
+
+    def process(self, html):
+        pass
+
+    @staticmethod
+    def _wrap_in_tag(tag, data):
+        return '<{tag}>{data}</{tag}>'.format(tag=tag, data=data.lstrip())
+
+    def handle_starttag(self, tag, attrs):
+        # print('Found tag', tag)
+        # if tag == 'avb-item':
+        #     print('Found avb-item')
+        #     return
+        #
+        # if tag == 'ng-switch':
+        #     print('Found ng-switch')
+        #     return
+
+        if tag == 'customtag':
+            print('Found custom tag')
+
+        if tag == 'sport-header':
+            print(tag)
+            return
+
+        if tag == 'content-managed-page':
+            print(tag)
+            return
+
+        if tag == 'promotion':
+            print(tag)
+            return
+
+        if tag == 'single-market-default-layout':
+            print(tag)
+            return
+
+    def handle_endtag(self, tag):
+        pass
+
+    def handle_data(self, data):
+        pass
 
 
 class SkyBetParser(BaseParser):
+    def __init__(self, engine=_HTMLParserEngine):
+        self.engine = engine
+
     def parse(self, html):
-        return html
+        self.engine.process(html)
+        return self.engine.data
 
 
-async def process():
-    from crawler.fetcher.browser import BrowserFetcher
-    from crawler.proxy import Proxy
-    event_url = 'https://m.skybet.com/football/world-cup-2018/event/16742642'
-    base_url = 'https://www.skybet.com'
-    proxy = Proxy(ip='163.172.175.210', port=3128)
-    fetcher = SimpleFetcher(base_url=base_url, proxy=proxy)
-    page = await fetcher.request(event_url)
-    with open('f.html', 'w') as f:
-        f.write(page)
-    await fetcher.close()
-
-
-def main():
-    import asyncio
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(process())
-
-
-if __name__ == '__main__':
-    main()
+"""
+Tree
+"""
