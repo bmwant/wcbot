@@ -26,3 +26,12 @@ async def index(request):
         'teams': teams,
         'resources': resources
     }
+
+
+@aiohttp_jinja2.template('loading.html')
+async def loading(request):
+    pass
+
+
+async def refresh_data():
+    pass

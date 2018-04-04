@@ -23,5 +23,5 @@ async def load_resources():
 
 async def get_cached_value(*, cache, key):
     value = await cache.get(key)
-    return json.loads(value)
-
+    if value is not None:
+        return json.loads(value)

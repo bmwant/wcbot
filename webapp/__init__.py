@@ -7,6 +7,7 @@ from . import views
 
 def setup_routes(app):
     app.router.add_get('/', views.index)
+    app.router.add_get('/loading', views.loading)
 
 
 def setup_static_routes(app):
