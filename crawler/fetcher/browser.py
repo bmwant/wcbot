@@ -83,13 +83,21 @@ class BrowserFetcher(BaseFetcher):
                     f'//*[contains(text(), "{guess_text}")]')
 
                 self._click_element(elem)
-                time.sleep(self.ACTIONS_DELAY_TIME)
             except NoSuchElementException:
                 pass
             else:
                 break
+        # Wait for page to process events
+        time.sleep(self.ACTIONS_DELAY_TIME)
 
     def _click_element(self, elem):
+        try:
+            elem.click()
+        except WebDriverException as e:
+            pass
+        else:
+            return
+
         try:
             pos = elem.location_once_scrolled_into_view
             xpos = pos['x']
@@ -100,8 +108,8 @@ class BrowserFetcher(BaseFetcher):
             elem.click()
         except WebDriverException as e:
             self.logger.critical(
-                f'Received unexpected error: {e}. '
-                f'Will ignore it, but you may get corrupted/partial results.')
+                f'Received unexpected error: {e} '
+                f'Ignoring it, but you may get corrupted/partial results.')
 
     def _close(self):
         self.driver.close()

@@ -39,7 +39,7 @@ async def test_browser_fetcher_with_proxy_reveals_hidden_elements(
 ):
     url = 'https://m.skybet.com/football/world-cup-2018/event/16742642'
     resp = await browser_fetcher_with_proxy.request(url)
-    
+
     assert 'Australia</div>' in resp
     assert 'Tunisia</div>' in resp
     assert 'Panama</div>' in resp
