@@ -12,26 +12,27 @@ def cli():
     pass
 
 
-async def schedule_monitoring():
-    logger = get_logger()
+async def schedule_grabbing(scheduler):
     factory = Factory()
     await factory.init_cache()
     factory.load_resources()
     factory.load_teams()
     tasks = factory.create()
-    scheduler = Scheduler(tasks=tasks)
-    try:
-        await scheduler.run_forever()
-    except KeyboardInterrupt:
-        logger.warning('Exiting...')
-    finally:
-        await scheduler.cleanup()
+    scheduler.add_tasks(tasks)
+    await scheduler.run_forever()
 
 
 @cli.command()
 def monitor():
+    logger = get_logger()
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(schedule_monitoring())
+    scheduler = Scheduler()
+    try:
+        loop.run_until_complete(schedule_grabbing(scheduler))
+    except KeyboardInterrupt:
+        logger.debug('Interrupt monitoring...')
+    finally:
+        loop.run_until_complete(scheduler.cleanup())
 
 
 @cli.command()

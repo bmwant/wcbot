@@ -13,6 +13,9 @@ class Scheduler(object):
         self.interval = interval
         self.logger = get_logger(self.__class__.__name__.lower())
 
+    def add_tasks(self, tasks: list):
+        self.tasks.extend(tasks)
+
     async def run_forever(self):
         # todo: add exceptions handling within child processes
         while True:
