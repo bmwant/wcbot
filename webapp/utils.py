@@ -42,4 +42,3 @@ async def refresh_data():
 
     await scheduler.run_once()
     await scheduler.cleanup()
-    await factory.cache.set('refreshing', 0)

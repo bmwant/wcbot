@@ -1,4 +1,5 @@
 import asyncio
+from functools import partial
 
 import aiohttp_jinja2
 from aiohttp import web
@@ -41,20 +42,28 @@ async def index(request):
 
 @aiohttp_jinja2.template('loading.html')
 async def loading(request):
-    logger = request.app.logger
-    cache = request.app['cache']
+    app = request.app
+    logger = app.logger
     logger.info('Accessing loading page')
-    in_progress = await cache.get('refreshing')
-    if not in_progress:
-        loop = asyncio.get_event_loop()
-        loop.call_soon(refresh_data)
-        await cache.set('refreshing', 1)
+    task = getattr(app, 'refreshing', None)
+    if task is None:
+        task = asyncio.ensure_future(refresh_data())
+        callback = partial(done_refresh, app)
+        task.add_done_callback(callback)
+        app.refreshing = task
+
+
+def done_refresh(app, future):
+    logger = app.logger
+    if hasattr(app, 'refreshing'):
+        del app.refreshing
+
+    exc = future.exception()
+    if exc is not None:
+        logger.critical('Failed to update: %s', exc)
 
 
 async def check_refresh_done(request):
-    cache = request.app['cache']
-    refreshing = bool(await cache.get('refreshing'))
-
     return web.json_response({
-        'refreshing': refreshing
+        'refreshing': hasattr(request.app, 'refreshing')
     })
