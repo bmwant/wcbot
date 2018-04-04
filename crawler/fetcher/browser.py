@@ -73,7 +73,7 @@ class BrowserFetcher(BaseFetcher):
         collapsed elements.
         """
         expand_elements_text = (
-            # 'Show More',
+            'Show More',
             'Show All',
         )
         for guess_text in expand_elements_text:

@@ -4,6 +4,7 @@ import click
 
 from crawler.factory import Factory
 from crawler.scheduler import Scheduler
+from utils import get_logger
 
 
 @click.group()
@@ -12,14 +13,19 @@ def cli():
 
 
 async def schedule_monitoring():
+    logger = get_logger()
     factory = Factory()
     await factory.init_cache()
     factory.load_resources()
     factory.load_teams()
     tasks = factory.create()
     scheduler = Scheduler(tasks=tasks)
-    await scheduler.run()
-    # todo: add cleanup for scheduler
+    try:
+        await scheduler.run_forever()
+    except KeyboardInterrupt:
+        logger.warning('Exiting...')
+    finally:
+        await scheduler.cleanup()
 
 
 @cli.command()

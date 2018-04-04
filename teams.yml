@@ -3,18 +3,35 @@
 # This file is in place only in case you want to limit
 # set of teams
 
-- 'Brazil'
-- 'Germany'
-- 'Spain'
-- 'France'
-- 'Argentina'
-- 'Belgium'
-- 'England'
-- 'Portugal'
-- 'Uruguay'
-- 'Croatia'
-- 'Colombia'
-- 'Russia'
-- 'Poland'
-- 'Denmark'
-- 'Mexico'
+- "Brazil"
+- "Germany"
+- "France"
+- "Spain"
+- "Argentina"
+- "Belgium"
+- "England"
+- "Portugal"
+- "Croatia"
+- "Colombia"
+- "Uruguay"
+- "Russia"
+- "Poland"
+- "Switzerland"
+- "Sweden"
+- "Denmark"
+- "Mexico"
+- "Senegal"
+- "Peru"
+- "Serbia"
+- "Nigeria"
+- "Iceland"
+- "Japan"
+- "Egypt"
+- "Australia"
+- "Morocco"
+- "Iran"
+- "Costa Rica"
+- "South Korea"
+- "Tunisia"
+- "Panama"
+- "Saudi Arabia"

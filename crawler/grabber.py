@@ -32,6 +32,7 @@ class Grabber(object):
         response = await self.fetcher.request(url=target_url)
         data = self.parser.parse(response)
         if self.cache is not None:
+            print(data.keys())
             await self.cache.set(self.name, data)
         return data
 

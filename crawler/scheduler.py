@@ -13,13 +13,16 @@ class Scheduler(object):
         self.interval = interval
         self.logger = get_logger(self.__class__.__name__.lower())
 
-    async def run(self):
+    async def run_forever(self):
         # todo: add exceptions handling within child processes
         while True:
-            await asyncio.gather(*self.tasks)
+            await self.run_once()
             self.logger.info('Waiting %s seconds to make next update...' %
                              self.interval)
             await asyncio.sleep(self.interval)
 
     async def run_once(self):
-        pass
+        await asyncio.gather(*self.tasks)
+
+    async def cleanup(self):
+        self.logger.info('Cleaning up resources...')
