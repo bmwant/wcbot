@@ -12,3 +12,16 @@
   </div>
 </div>
 {% endblock %}
+{% block scripts %}
+<script>
+  $(document).ready(function() {
+    setInterval(function() {
+      $.get('/check', function(data) {
+        if(!data.refreshing) {
+          window.location = '/';
+        }
+      });
+    }, 3000);
+  });
+</script>
+{% endblock %}

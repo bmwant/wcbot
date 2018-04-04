@@ -7,7 +7,8 @@ from . import views
 
 def setup_routes(app):
     app.router.add_get('/', views.index)
-    app.router.add_get('/loading', views.loading)
+    app.router.add_get('/loading', views.loading, name='loading')
+    app.router.add_get('/check', views.check_refresh_done)
 
 
 def setup_static_routes(app):
