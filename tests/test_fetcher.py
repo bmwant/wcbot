@@ -40,6 +40,15 @@ async def test_browser_fetcher_with_proxy_reveals_hidden_elements(
     url = 'https://m.skybet.com/football/world-cup-2018/event/16742642'
     resp = await browser_fetcher_with_proxy.request(url)
 
-    assert 'Australia' in resp
-    assert 'Tunisia' in resp
-    assert 'Panama' in resp
+    with open('f.html', 'w') as f:
+        f.write(resp)
+
+    assert 'Australia</div>' in resp
+    assert 'Tunisia</div>' in resp
+    assert 'Panama</div>' in resp
+    assert 'Mexico</div>' in resp
+    assert 'Costa Rica</div>' in resp
+    assert 'Korea Republic</div>' in resp
+    assert 'Switzerland</div>' in resp
+    # Element was clicked and not on the page anymore
+    assert 'Show All' not in resp

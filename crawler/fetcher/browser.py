@@ -13,6 +13,7 @@ from crawler.driver.chrome import ChromeDriver
 class BrowserFetcher(BaseFetcher):
     DEFAULT_DRIVER_CLS = ChromeDriver
     DEFAULT_WAIT_TIME = 2
+    ACTIONS_DELAY_TIME = 2
 
     def __init__(self, base_url, *,
                  driver_cls=None, xpath=None, proxy=None):
@@ -58,7 +59,6 @@ class BrowserFetcher(BaseFetcher):
         time.sleep(wait)
 
         self._do_actions()
-
         # Crop page to particular region if needed
         if self.xpath is not None:
             return self.driver. \
@@ -81,7 +81,9 @@ class BrowserFetcher(BaseFetcher):
                 # Add any logic for common elements here
                 elem = self.driver.find_element_by_xpath(
                     f'//*[contains(text(), "{guess_text}")]')
+
                 self._click_element(elem)
+                time.sleep(self.ACTIONS_DELAY_TIME)
             except NoSuchElementException:
                 pass
             else:
@@ -89,11 +91,14 @@ class BrowserFetcher(BaseFetcher):
 
     def _click_element(self, elem):
         try:
+            pos = elem.location_once_scrolled_into_view
+            xpos = pos['x']
+            ypos = pos['y']
+            # Element should be available to click
+            self.driver.execute_script(
+                f'window.scrollBy({xpos}, {ypos})', '')
             elem.click()
         except WebDriverException as e:
-            if 'Other element would receive the click' in e.msg:
-                # No matter which exact element is clicked
-                return
             self.logger.critical(
                 f'Received unexpected error: {e}. '
                 f'Will ignore it, but you may get corrupted/partial results.')
